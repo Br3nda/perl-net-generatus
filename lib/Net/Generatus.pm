@@ -12,12 +12,12 @@ sub Status {
     my $self = shift;
 	$self->set_user_agent("Net::Generatus-$VERSION (PERL)");
 
-    my $keyword = shift || undef;
     my $params = shift || {};
 
     #grab the params
     my $gender = $params->{'gender'} || 'F';
     my $name = $params->{'name'} || undef;
+	my $keyword = $params->{'keyword'} || undef;
     
     #build URL
     my $url = 'http://www.generatus.com/AJAXStatus.asp?';
@@ -78,7 +78,7 @@ returns: string
 =head2 EXAMPLE
 
   #get a rude status message
-  $status = Net::Generatus::Status('rude');
+  $status = Net::Generatus::Status(keyword => 'rude');
 
 =head1 AUTHOR
 
