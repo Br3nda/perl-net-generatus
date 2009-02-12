@@ -17,14 +17,14 @@ sub Status {
     #grab the params
     my $gender = $params->{'gender'} || 'F';
     my $name = $params->{'name'} || undef;
-	my $keyword = $params->{'keyword'} || undef;
+	my $tag = $params->{'tag'} || undef;
     
     #build URL
     my $url = 'http://www.generatus.com/AJAXStatus.asp?';
 
     $url .= '&G=' . URI::Escape::uri_escape($gender); 
     $url .= '&N=' . URI::Escape::uri_escape($name) if ($name);
-    $url .= '&K=' . URI::Escape::uri_escape($keyword) if ($keyword);
+    $url .= '&K=' . URI::Escape::uri_escape($tag) if ($tag);
 
     #do request
     my $req = $self->{ua}->get($url);
@@ -73,12 +73,16 @@ Net::Generatus
 
 =head2 Status
 
+params 
+  tag - (optional) select the status message from message with this tag 
+  name - (your name, optional, will be prepended to status message)
+  gender - either M or F (defaults to F)
 returns: string
 
 =head2 EXAMPLE
 
   #get a rude status message
-  $status = Net::Generatus::Status(keyword => 'rude');
+  $status = Net::Generatus::Status(tag => 'rude');
 
 =head1 AUTHOR
 
