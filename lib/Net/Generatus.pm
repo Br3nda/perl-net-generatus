@@ -8,16 +8,15 @@ use URI::Escape;
 our $VERSION = '0.20';
 #http://search.twitter.com/search.json?q=<query>
 
-sub search {
+sub Status {
     my $self = shift;
 	$self->set_user_agent("Net::Generatus-$VERSION (PERL)");
 
-    my $query = shift;
+    my $keyword = shift || undef;
     my $params = shift || {};
 
     #grab the params
     my $gender = $params->{'gender'} || 'F';
-    my $keyword = $params->{'keyword'} || undef;
     my $name = $params->{'name'} || undef;
     
     #build URL
@@ -59,111 +58,32 @@ Net::Generatus
 =head1 SYNOPSYS
 
   use Net::Generatus;
-
-  my $gen = Net::Generatus->new();
+	#get an interesting yet rude status message
+  	$status = Net::Generatus::Status('rude');
+  	#use the $status string to update your twitter or facebook or whatever status
+  
 
 
     
 =head1 DESCRIPTION
 
-For searching twitter - handy for bots
+	Pulls a random and potentially witty status message from generatus.com which could be used to update twitter or one of it's clones
 
 =head1 METHODS
 
-=head2 search 
+=head2 Status
 
-required parameter: query
+returns: string
 
-returns: hash
+=head2 EXAMPLE
 
-=head2 SEARCH EXAMPLES
-
-Find tweets containing a word
-
-  $results = $twitter->search('word');
-
-Find tweets from a user:
-
-  $results = $twitter->search('from:br3nda');
-
-Find tweets to a user:
-
-  $results = $twitter->search('to:serenecloud');
-
-Find tweets referencing a user:
-
-  $results = $twitter->search('@br3ndabot');
-
-Find tweets containing a hashtag:
-
-  $results = $twitter->search('#perl');
-
-Combine any of the operators together:
-
-  $results = $twitter->search('solaris anger from:br3nda');
-
- 
-=head2 SEARCH ADDITIONAL PARAMETERS 
-
-  The search method also supports the following optional URL parameters:
- 
-=head3 lang
-
-Restricts tweets to the given language, given by an ISO 639-1 code.
-
-  $results = $twitter->search('hello', {lang=>'en'});
-  #search for hello in maori
-  $results = $twitter->search('kiaora', {lang=>'mi'});
-
-
-=head3 rpp
-
-The number of tweets to return per page, up to a max of 100.
-
-  $results = $twitter->search('love', {rpp=>'10'});
-
-=head3 page
-
-The page number to return, up to a max of roughly 1500 results (based on rpp * page)
-
-  #get page 3
-  $results = $twitter->search('love', {page=>'3'});
-
-=head3 since_id
-
-Returns tweets with status ids greater than the given id.
-
-  $results = $twitter->search('love', {since_id=>'1021356410'});
-
-=head3 geocode
-
-returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile. The parameter value is specified by "latitide,longitude,radius", where radius units must be specified as either "mi" (miles) or "km" (kilometers).
-
- $results = $twitter->search('coffee', {geocode=> '40.757929,-73.985506,25km'});
-
-Note that you cannot use the near operator via the API to geocode arbitrary locations; however you can use this geocode parameter to search near geocodes directly.
-
-=head2 treads
-
-Returns the top ten queries that are currently trending on Twitter.  The response includes the time of the request, the name of each trending topic, and the url to the Twitter Search results page for that topic.
-
-=head3 TRENDS EXAMPLES
-
-  my $results = $twitter->trends();
-  foreach my $trend(@{ $results }) {
-    print $trend->{name} .' '. $trend->{url} ."\n";
-  }
-
-=head2 set_user_agent
-The search.twitter.com terms of service request that you set the user agent of the request to something meaningful. This helps us answer any questions about your use of the API.
-
-
-=head1 SEE ALSO
-
-L<Net::Twitter>
+  #get a rude status message
+  $status = Net::Generatus::Status('rude');
 
 =head1 AUTHOR
 
 Brenda Wallace <shiny@cpan.org>
+
+(based on Net::Twitter::Search and Net::Twitter::Diff)
 
 =cut
