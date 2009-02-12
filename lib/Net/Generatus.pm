@@ -25,69 +25,47 @@ sub search {
 
     #build URL
     my $url = 'http://search.twitter.com/search.json?q=' . URI::Escape::uri_escape($query) .'&page='. $page;
+
     $url .= '&lang=' . URI::Escape::uri_escape($lang) if ($lang);
     $url .= '&since_id=' . URI::Escape::uri_escape($since_id) if ($since_id);
     $url .= '&geocode=' . URI::Escape::uri_escape($geocode) if ($geocode);
 
     #do request
     my $req = $self->{ua}->get($url);
+	my $response = $ua->post('http://www.generatus.com/AJAXStatus.asp?N=&G=' . $gender . '&k=');
 
-    die 'fail to connect to twitter.' unless $req->is_success;
-    return [] if $req->content eq 'null';
+	if ($response->is_success) {
+    	 $raw = $response->decoded_content;  # or whatever
+ 	}
+ 	else {
+     	die $response->status_line;
+ 	}
 
-    #decode the json
-    my $res = JSON::Any->jsonToObj($req->content) ;
-
-    return $res->{'results'};
-
+	my @bits = split(/\#\#\#/, $raw);
+	my $status = $bits[0];
+	chomp $status;	
+	return $status;	
 }
 
-sub trends {
-    my $self = shift;
-	$self->set_user_agent("Net::Twitter::Search-$VERSION (PERL)");
-
-    my $url = 'http://search.twitter.com/trends.json';
-    my $req = $self->{ua}->get($url);
-  
-    die 'fail to connect to twitter.' unless $req->is_success;
-    return [] if $req->content eq 'null';
-
-    #decode the json
-    my $res = JSON::Any->jsonToObj($req->content) ;
-
-    return $res->{'trends'};
-}
-
-sub set_user_agent {
-	my $self = shift;
-	my $agent = shift;
-	$self->{ua}->agent($agent);
-}
+# sub set_user_agent {
+# 	my $self = shift;
+# 	my $agent = shift;
+# 	$self->{ua}->agent($agent);
+# }
 
 1;
 
 =head1 NAME
 
-Net::Twitter::Search Twitter Search 
+Net::Generatus
 
 =head1 SYNOPSYS
 
-  use Net::Twitter::Search;
+  use Net::Generatus;
 
-  my $twitter = Net::Twitter::Search->new();
+  my $gen = Net::Generatus->new();
 
-  my $results = $twitter->search('Albi the racist dragon');
-  foreach my $tweet (@{ $results }) {
-    my $speaker =  $tweet->{from_user};
-    my $text = $tweet->{text};
-    my $time = $tweet->{created_at};
-    print "$time <$speaker> $text\n";
-  }
 
-   #you can also use any methods from Net::Twitter.
-   my $twitter = Net::Twitter::Search->new(username => $username, password => $password);
-   my $steve = $twitter->search('Steve');
-   $twitter->update($steve .'? Who is steve?');
     
 =head1 DESCRIPTION
 
