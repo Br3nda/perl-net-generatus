@@ -16,23 +16,20 @@ sub search {
     my $params = shift || {};
 
     #grab the params
-    my $rpp = $params->{'rpp'} || 10;
-    my $page = $params->{'page'} || 1;
-
-    my $lang = $params->{'lang'} || undef;
-    my $since_id = $params->{'since'} || undef;
-    my $geocode = $params->{'since'} || undef;
-
+    my $gender = $params->{'gender'} || 'F';
+    my $keyword = $params->{'keyword'} || undef;
+    my $name = $params->{'name'} || undef;
+    
     #build URL
-    my $url = 'http://search.twitter.com/search.json?q=' . URI::Escape::uri_escape($query) .'&page='. $page;
+    my $url = 'http://www.generatus.com/AJAXStatus.asp?';
 
-    $url .= '&lang=' . URI::Escape::uri_escape($lang) if ($lang);
-    $url .= '&since_id=' . URI::Escape::uri_escape($since_id) if ($since_id);
-    $url .= '&geocode=' . URI::Escape::uri_escape($geocode) if ($geocode);
+    $url .= '&G=' . URI::Escape::uri_escape($gender); 
+    $url .= '&N=' . URI::Escape::uri_escape($name) if ($name);
+    $url .= '&K=' . URI::Escape::uri_escape($keyword) if ($keyword);
 
     #do request
     my $req = $self->{ua}->get($url);
-	my $response = $ua->post('http://www.generatus.com/AJAXStatus.asp?N=&G=' . $gender . '&k=');
+	my $response = $ua->post($url); 
 
 	if ($response->is_success) {
     	 $raw = $response->decoded_content;  # or whatever
