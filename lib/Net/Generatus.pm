@@ -1,16 +1,18 @@
-package Net::Twitter::Search;
+package Net::Generatus;
 
 use warnings;
 use strict;
 use base qw/Net/;
 use URI::Escape;
+use LWP::UserAgent;
+#use Carp;
 
 our $VERSION = '0.20';
 #http://search.twitter.com/search.json?q=<query>
 
 sub Status {
     my $self = shift;
-	$self->set_user_agent("Net::Generatus-$VERSION (PERL)");
+	#$self->set_user_agent("Net::Generatus-$VERSION (PERL)");
 
     my $params = shift || {};
 
@@ -27,8 +29,11 @@ sub Status {
     $url .= '&K=' . URI::Escape::uri_escape($tag) if ($tag);
 
     #do request
-    my $req = $self->{ua}->get($url);
+	my $ua = LWP::UserAgent->new();
+    #my $req = $self->{ua}->get($url);
 	my $response = $ua->post($url); 
+	
+	my $raw;	
 
 	if ($response->is_success) {
     	 $raw = $response->decoded_content;  # or whatever
