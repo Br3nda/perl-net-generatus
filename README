@@ -1,4 +1,4 @@
-Net-Twitter-Search version 0.01
+Net-Generatus version 0.01
 ===============================
 
 The README is used to introduce the module and provide instructions on
@@ -31,7 +31,7 @@ COPYRIGHT AND LICENCE
 
 Put the correct copyright and licence information here.
 
-Copyright (C) 2008 by brenda
+Copyright (C) 2008 by Brenda Wallace
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.8 or,
