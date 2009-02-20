@@ -2,11 +2,10 @@
 use inc::Module::Install;
 
 # Define metadata
-name            'Net-Twitter-Search';
-all_from        'lib/Net/Twitter/Search.pm';
+name            'Net-Generatus';
+all_from        'lib/Net/Generatus.pm';
 
 # Specific dependencies
-requires        'Net::Twitter'      => 0;
 requires 	 'URI::Escape' => 0;
 #build_requires  'Test::More'        => '0.42';
 #recommends      'Your::OtherModule' => '0.01';
