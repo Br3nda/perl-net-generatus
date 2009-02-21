@@ -18,15 +18,15 @@ sub Status {
 
     #grab the params
     my $gender = $params->{'gender'} || 'F';
-    my $name = $params->{'name'} || undef;
-	my $tag = $params->{'tag'} || undef;
+    my $name = $params->{'name'} || '';
+	my $tag = $params->{'tag'} || '';
     
     #build URL
     my $url = 'http://www.generatus.com/AJAXStatus.asp?';
 
-    $url .= '&G=' . URI::Escape::uri_escape($gender); 
-    $url .= '&N=' . URI::Escape::uri_escape($name) if ($name);
-    $url .= '&K=' . URI::Escape::uri_escape($tag) if ($tag);
+    $url .= 'G=' . URI::Escape::uri_escape($gender); 
+    $url .= '&N=' . URI::Escape::uri_escape($name);# if ($name);
+    $url .= '&K=' . URI::Escape::uri_escape($tag); # if ($tag);
 
     #do request
 	my $ua = LWP::UserAgent->new();
@@ -34,12 +34,11 @@ sub Status {
 	my $response = $ua->post($url); 
 	
 	my $raw;	
-
 	if ($response->is_success) {
     	 $raw = $response->decoded_content;  # or whatever
  	}
  	else {
-     	die $response->status_line;
+     	  die $response->status_line;
  	}
 
 	my @bits = split(/\#\#\#/, $raw);
@@ -63,10 +62,8 @@ Net::Generatus
 =head1 SYNOPSYS
 
   use Net::Generatus;
-	#get an interesting yet rude status message
-  	$status = Net::Generatus::Status('rude');
-  	#use the $status string to update your twitter or facebook or whatever status
-  
+  #get an interesting yet rude status message
+  $status = Net::Generatus::Status({tag => 'insults'});
 
 
     
@@ -86,8 +83,10 @@ returns: string
 
 =head2 EXAMPLE
 
-  #get a rude status message
-  $status = Net::Generatus::Status(tag => 'rude');
+  #get a insults status message
+  $status = Net::Generatus::Status({tag => 'insults'});
+ 
+  $status = Net::Generatus::Status({gender => 'M'});
 
 =head1 AUTHOR
 
