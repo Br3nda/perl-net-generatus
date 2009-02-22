@@ -7,7 +7,7 @@ use URI::Escape;
 use LWP::UserAgent;
 #use Carp;
 
-our $VERSION = '0.30';
+our $VERSION = '0.31';
 #http://search.twitter.com/search.json?q=<query>
 
 sub Status {
